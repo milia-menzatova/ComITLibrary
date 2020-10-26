@@ -10,12 +10,14 @@ namespace ComitLibrary
 
             Console.WriteLine("Welcome to the ComIT Library!");
 
-            while (true) {
+            while (true)
+            {
                 Console.WriteLine("\nc - checkout a book; r - return a book; s - search for a book; q - quit");
                 string userInput = Console.ReadLine();
 
                 // Checkout a book
-                if (userInput == "c") {
+                if (userInput == "c")
+                {
                     Console.WriteLine("Please enter patron Id: ");
                     string patronIdInput = Console.ReadLine();
                     long patronId = Convert.ToInt64(patronIdInput);
@@ -25,34 +27,58 @@ namespace ComitLibrary
                     long bookId = Convert.ToInt64(bookIdInput);
 
                     bool success = theLibrary.CheckoutBook(patronId, bookId);
-                    if (success) {
+                    if (success)
+                    {
                         Console.WriteLine("Book has been checked out!");
-                    } else {
+                    }
+                    else
+                    {
                         Console.WriteLine("Something went wrong. Could not check out book");
                     }
                 }
 
                 // Return a book
-                if (userInput == "r") {
-                    // Not done yet
-                    theLibrary.ReturnBook();
+                if (userInput == "r")
+                {
+                    Console.WriteLine("Please enter patron Id: ");
+                    string patronIdInput = Console.ReadLine();
+                    long patronId = Convert.ToInt64(patronIdInput);
+
+                    Console.WriteLine("Please enter the book Id: ");
+                    string bookIdInput = Console.ReadLine();
+                    long bookId = Convert.ToInt64(bookIdInput);
+
+                    bool isReturned = theLibrary.ReturnBook(patronId, bookId);
+                    if (isReturned)
+                    {
+                        Console.WriteLine("The book has successfully been returned");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Could not accept the book for return");
+                    }
                 }
 
                 // Search for a book
-                if (userInput == "s") {
+                if (userInput == "s")
+                {
                     Console.WriteLine("What is the title you want to search for?");
                     string titleToSearch = Console.ReadLine();
                     Book result = theLibrary.SearchForBook(titleToSearch);
-                    
-                    if (result == null) {
+
+                    if (result == null)
+                    {
                         Console.WriteLine("Book was not found");
-                    } else {
+                    }
+                    else
+                    {
                         Console.WriteLine($"Found a book with Id: {result.Id} ");
                     }
                 }
 
                 // Quit
-                if (userInput == "q") {
+                if (userInput == "q")
+                {
                     break;
                 }
             }

@@ -7,7 +7,8 @@ namespace ComitLibrary
     public class LibrarySystem
     {
         // Constructor
-        public LibrarySystem() {
+        public LibrarySystem()
+        {
             // Create an empty list
             _books = new List<Book>();
             _patrons = new List<Patron>();
@@ -40,47 +41,60 @@ namespace ComitLibrary
 
 
         // Search for a book
-        public Book SearchForBook(string titleToSearch) {
+        public Book SearchForBook(string titleToSearch)
+        {
             Console.WriteLine($"Searching for book: {titleToSearch}");
 
-            for (int i = 0; i < _books.Count; i++) {
+            for (int i = 0; i < _books.Count; i++)
+            {
                 Book nextBook = _books[i];
-                if (nextBook.Title.ToLower() == titleToSearch.ToLower()) {
+                if (nextBook.Title.ToLower() == titleToSearch.ToLower())
+                {
                     return nextBook;
                 }
             }
-            
+
             return null; // Null is absence of a book
         }
 
         // Checkout a book
-        public bool CheckoutBook(long patronId, long bookId) {
+        public bool CheckoutBook(long patronId, long bookId)
+        {
             Console.WriteLine("Checking out a book...");
 
             bool patronExists = false;
             bool bookExists = false;
             bool result = false;
 
-            for (int i = 0; i < _patrons.Count; i++) {
+            for (int i = 0; i < _patrons.Count; i++)
+            {
                 var nextPatron = _patrons[i];
-                if (nextPatron.Id == patronId) {
+                if (nextPatron.Id == patronId)
+                {
                     patronExists = true;
+                    break;
                 }
             }
 
             // TODO: Handle this!
-            if (!patronExists) {
+            if (!patronExists)
+            {
                 throw new Exception($"Patron {patronId} does not exist!!");
             }
 
-            for (int i = 0; i < _books.Count; i++) {
+            for (int i = 0; i < _books.Count; i++)
+            {
                 var nextBook = _books[i];
-                if (nextBook.Id == bookId) {
+                if (nextBook.Id == bookId)
+                {
                     bookExists = true;
 
-                    if (nextBook.IsCheckedOut) {
+                    if (nextBook.IsCheckedOut)
+                    {
                         result = false;
-                    } else {
+                    }
+                    else
+                    {
                         result = true;
                         nextBook.IsCheckedOut = true;
                     }
@@ -88,7 +102,8 @@ namespace ComitLibrary
             }
 
             // TODO: Handle this!
-            if (!bookExists) {
+            if (!bookExists)
+            {
                 throw new Exception($"Book {bookId} does not exist!!");
             }
 
@@ -96,8 +111,49 @@ namespace ComitLibrary
         }
 
         // Return a book
-        public void ReturnBook() {
+        public bool ReturnBook(long patronId, long bookId)
+        {
             Console.WriteLine("Returning a book...");
+
+            bool patronExists = false;
+            bool bookExists = false;
+            bool result = false;
+
+            for (int i = 0; i < _patrons.Count; i++)
+            {
+                var nextPatron = _patrons[i];
+                if (nextPatron.Id == patronId)
+                {
+                    patronExists = true;
+                    break;
+                }
+            }
+
+            if (!patronExists)
+            {
+                Console.WriteLine($"Patron {patronId} does not exist!!. Please, try again!");
+                return false;
+            }
+
+            for (int i = 0; i < _books.Count; i++)
+            {
+                var nextBook = _books[i];
+                if (nextBook.Id == bookId)
+                {
+                    bookExists = true;
+                    nextBook.IsCheckedOut = false;
+                    result = true;
+                    break;
+                }
+            }
+
+            if (!bookExists)
+            {
+                Console.WriteLine($"Book {bookId} does not exist!!. Try again!!!");
+                return false;
+            }
+
+            return result;
         }
 
     }
